@@ -1,0 +1,5 @@
+testfile_path: "test.txt"
+package: mariadb
+mysql_pass: P@ssword
+login_user: root
+login_password: P@ssword 
