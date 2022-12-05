@@ -16,7 +16,7 @@
 #     chdir: C:\dev
 
 - name: Install the MariaDB
-  win_package:
+  ansible.windows.win_package:
     path: C:\\dev\\mariadb-10.6.11-winx64.msi
 
 - name: Set Root Password For MariaDB
@@ -25,7 +25,7 @@
       mysqladmin -uroot password "P@ssword"
 
 - name: Configure MariaDB to use lower case table names
-  win_lineinfile:
+  community.windows.win_lineinfile:
     dest: C:\Program Files\MariaDB 10.6\data\my.ini
     line: |
       [mysqld]
@@ -34,7 +34,7 @@
       collation_server = utf8_general_ci
 
 - name: Copy a SQL Scripts File
-  win_copy:
+  ansible.windows.win_copy:
     src: "test-mysql.sql"
     dest: C:\Windows\Temp\test-mysql.sql
 
@@ -49,7 +49,7 @@
     dest: C:\dev
 
 - name: "Creating varfile to change default credentials"
-  win_copy:
+  ansible.windows.win_copy:
     dest: "C:\\dev\\nuix-investigate-windows-9.6.15.varfile"
     content: |
       RUN_UMS_INSTALLER=true
