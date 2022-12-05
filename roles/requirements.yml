@@ -1,2 +1,4 @@
 ---
-- src: chocolatey.chocolatey
+- src: https://github.com/ansible-collections/community.windows.git
+  name: community.windows
+  scm: git
