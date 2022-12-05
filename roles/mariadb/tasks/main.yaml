@@ -23,8 +23,8 @@
   ansible.windows.win_powershell:
     script: |
       mysqladmin -uroot password "P@ssword"
- 
- - name: Configure MariaDB to use lower case table names
+
+- name: Configure MariaDB to use lower case table names
   win_lineinfile:
     dest: C:\Program Files\MariaDB 10.6\data\my.ini
     line: |
@@ -69,8 +69,8 @@
     path: C:\Program Files\Nuix\Web Platform\Nuix-MariaDb
     state: directory
 
-
 ### Set Nuix Config files Parameters
+
 - community.windows.win_lineinfile:
     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
     regex: '^inventory.inventoryLocations=./cases'
@@ -95,9 +95,11 @@
     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
     regex: '^licensing.securePassword='
     line: 'licensing.securePassword={cipher}d29efe404e14a83fdc9b819b4c3c48173f5df6e0025ada7fa233e2ed19e51b4'
+
 ###
 
 ### Set Java Heap Size In Files
+
 - name: Configure MariaDB to use lower case table names
   community.windows.win_lineinfile:
     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\config-util\application.vmoptions
@@ -133,7 +135,6 @@
     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\user-management\application.vmoptions
     regex: '^Xmx2G'
     line: Xmx2G
-
 
 ###
 
