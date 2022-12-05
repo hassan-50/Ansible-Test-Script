@@ -1,3 +1,2 @@
 ---
-collections:
-- community.windows
+- src: community.windows
