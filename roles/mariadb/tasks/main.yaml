@@ -68,9 +68,7 @@
   ansible.windows.win_file:
     path: C:\Program Files\Nuix\Web Platform\Nuix-MariaDb
     state: directory
-
-### Set Nuix Config files Parameters
-
+    
 - community.windows.win_lineinfile:
     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
     regex: '^inventory.inventoryLocations=./cases'
@@ -95,11 +93,6 @@
     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
     regex: '^licensing.securePassword='
     line: 'licensing.securePassword={cipher}d29efe404e14a83fdc9b819b4c3c48173f5df6e0025ada7fa233e2ed19e51b4'
-
-###
-
-### Set Java Heap Size In Files
-
 - name: Configure MariaDB to use lower case table names
   community.windows.win_lineinfile:
     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\config-util\application.vmoptions
@@ -135,46 +128,3 @@
     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\user-management\application.vmoptions
     regex: '^Xmx2G'
     line: Xmx2G
-
-###
-
-########################################### Working Scripts
-# - name: Create MariaDb Installation Directory
-#   ansible.windows.win_file:
-#     path: C:\Program Files\Nuix\Web Platform\Nuix-MariaDb
-#     state: directory
-
-# - name: Install MariaDB With Choco
-#   win_chocolatey:
-#     name: mysql
-#     choco_args:
-#     - '/installLocation=C:\Program Files\Nuix\Web Platform\Nuix-MariaDb'
-
-# - name: Install the Nuix-Investigate
-#   ansible.windows.win_package:
-#     path: C:\\dev\\nuix-investigate-windows-9.6.15.exe
-
-# - name: Powershell | Install Required Powershell Modules
-#   community.windows.win_psmodule:
-#     name: SimplySql
-#     state: latest
-#     accept_license: true
-
-# - name: Set Root Password For MariaDB
-#   ansible.windows.win_powershell:
-#     script: |
-#       mysql -uroot -pP@ssword
-
-
-
-# - name: install pckages
-#   shell: "mv /usr/local/example.txt /tmp"
-#     mv C:\\Program Files\MariaDB 10.11 C:\\Program Files\Nuix\Web Platform\Nuix-MariaDb
-# remove_dependencies: true
-# choco_args: --install-directory = C:\\Program Files\Nuix\Web Platform\Nuix-MariaDb
-
-
-# - name: Create directory structure
-#   ansible.windows.win_file:
-#     path: C:\\Program Files\Nuix\Web Platform\Nuix-MariaDb
-#     state: directory
