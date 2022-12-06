@@ -1,5 +1,29 @@
 ---
 ########################################### Working Scripts
+- name: Create dev directory
+  ansible.windows.win_file:
+    path: C:\\dev
+    state: directory
+
+- name: Download MariaDb installer
+  ansible.windows.win_get_url:
+    url: https://configprovisionaccount.blob.core.windows.net/nuix-installers/mariadb-10.6.11-winx64.msi
+    dest: C:\dev
+
+# - name: Install the MariaDb
+#   ansible.windows.win_command: msiexec /i C:\\dev\\mariadb-10.6.11-winx64.msi [INSTALLDIR=C:\Program Files\Nuix\Web Platform\Nuix-MariaDb] /qn
+#   args:
+#     chdir: C:\dev
+
+- name: Install the MariaDB
+  ansible.windows.win_package:
+    path: C:\\dev\\mariadb-10.6.11-winx64.msi
+
+- name: Set Root Password For MariaDB
+  ansible.windows.win_powershell:
+    script: |
+      mysqladmin -uroot password "P@ssword"
+
 - name: Configure MariaDB to use lower case table names
   community.windows.win_lineinfile:
     dest: C:\Program Files\MariaDB 10.6\data\my.ini
