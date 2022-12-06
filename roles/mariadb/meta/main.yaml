@@ -1,5 +1,2 @@
 ---
 dependencies: []
-# myrole/meta/main.yml
-collections:
-  - community.windows
