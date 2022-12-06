@@ -3,3 +3,4 @@ collections:
   - name: community.general  
   - name: community.vmware
   - name: community.windows
+  - name: community.windows.win_lineinfile
