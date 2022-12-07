@@ -2,129 +2,134 @@
 ########################################### Working Scripts
 - name: Create dev directory
   ansible.windows.win_file:
-    path: C:\\dev
+    path: C:\\dev2
     state: directory
 
-- name: Download MariaDb installer
-  ansible.windows.win_get_url:
-    url: https://configprovisionaccount.blob.core.windows.net/nuix-installers/mariadb-10.6.11-winx64.msi
-    dest: C:\dev
+# - name: Create dev directory
+#   ansible.windows.win_file:
+#     path: C:\\dev
+#     state: directory
 
-# - name: Install the MariaDb
-#   ansible.windows.win_command: msiexec /i C:\\dev\\mariadb-10.6.11-winx64.msi [INSTALLDIR=C:\Program Files\Nuix\Web Platform\Nuix-MariaDb] /qn
+# - name: Download MariaDb installer
+#   ansible.windows.win_get_url:
+#     url: https://configprovisionaccount.blob.core.windows.net/nuix-installers/mariadb-10.6.11-winx64.msi
+#     dest: C:\dev
+
+# # - name: Install the MariaDb
+# #   ansible.windows.win_command: msiexec /i C:\\dev\\mariadb-10.6.11-winx64.msi [INSTALLDIR=C:\Program Files\Nuix\Web Platform\Nuix-MariaDb] /qn
+# #   args:
+# #     chdir: C:\dev
+
+# - name: Install the MariaDB
+#   ansible.windows.win_package:
+#     path: C:\\dev\\mariadb-10.6.11-winx64.msi
+
+# - name: Set Root Password For MariaDB
+#   ansible.windows.win_powershell:
+#     script: |
+#       mysqladmin -uroot password "P@ssword"
+
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\MariaDB 10.6\data\my.ini
+#     line: |
+#       [mysqld]
+#       lower_case_table_names = 1
+#       character_set_server = utf8
+#       collation_server = utf8_general_ci
+
+# - name: Copy a SQL Scripts File
+#   ansible.windows.win_copy:
+#     src: "test-mysql.sql"
+#     dest: C:\Windows\Temp\test-mysql.sql
+
+# - name: Execute Sql Scripts file
+#   ansible.windows.win_powershell:
+#     script: |
+#       cmd.exe /c "mysql -uroot -pP@ssword -h localhost < C:\Windows\Temp\test-mysql.sql"
+
+# - name: Download Nuix Investigate installer
+#   ansible.windows.win_get_url:
+#     url: https://configprovisionaccount.blob.core.windows.net/nuix-installers/nuix-investigate-windows-9.6.15.exe
+#     dest: C:\dev
+
+# - name: "Creating varfile to change default credentials"
+#   ansible.windows.win_copy:
+#     dest: "C:\\dev\\nuix-investigate-windows-9.6.15.varfile"
+#     content: |
+#       RUN_UMS_INSTALLER=true
+#       RUN_REGISTRATION_INSTALLER=true
+#       RUN_INVESTIGATE_INSTALLER=true
+#       RUN_GATEWAY_INSTALLER=true
+#       RUN_CONFIG_INSTALLER=true
+#       CONFIG_DEFAULT_PASSWORD=P@ssword
+
+# - name: Install the Nuix-Investigate
+#   ansible.windows.win_command: C:\\dev\\nuix-investigate-windows-9.6.15.exe -q -console
 #   args:
 #     chdir: C:\dev
 
-- name: Install the MariaDB
-  ansible.windows.win_package:
-    path: C:\\dev\\mariadb-10.6.11-winx64.msi
-
-- name: Set Root Password For MariaDB
-  ansible.windows.win_powershell:
-    script: |
-      mysqladmin -uroot password "P@ssword"
-
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\MariaDB 10.6\data\my.ini
-    line: |
-      [mysqld]
-      lower_case_table_names = 1
-      character_set_server = utf8
-      collation_server = utf8_general_ci
-
-- name: Copy a SQL Scripts File
-  ansible.windows.win_copy:
-    src: "test-mysql.sql"
-    dest: C:\Windows\Temp\test-mysql.sql
-
-- name: Execute Sql Scripts file
-  ansible.windows.win_powershell:
-    script: |
-      cmd.exe /c "mysql -uroot -pP@ssword -h localhost < C:\Windows\Temp\test-mysql.sql"
-
-- name: Download Nuix Investigate installer
-  ansible.windows.win_get_url:
-    url: https://configprovisionaccount.blob.core.windows.net/nuix-installers/nuix-investigate-windows-9.6.15.exe
-    dest: C:\dev
-
-- name: "Creating varfile to change default credentials"
-  ansible.windows.win_copy:
-    dest: "C:\\dev\\nuix-investigate-windows-9.6.15.varfile"
-    content: |
-      RUN_UMS_INSTALLER=true
-      RUN_REGISTRATION_INSTALLER=true
-      RUN_INVESTIGATE_INSTALLER=true
-      RUN_GATEWAY_INSTALLER=true
-      RUN_CONFIG_INSTALLER=true
-      CONFIG_DEFAULT_PASSWORD=P@ssword
-
-- name: Install the Nuix-Investigate
-  ansible.windows.win_command: C:\\dev\\nuix-investigate-windows-9.6.15.exe -q -console
-  args:
-    chdir: C:\dev
-
-- name: Create MariaDb Installation Directory
-  ansible.windows.win_file:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-MariaDb
-    state: directory
+# - name: Create MariaDb Installation Directory
+#   ansible.windows.win_file:
+#     path: C:\Program Files\Nuix\Web Platform\Nuix-MariaDb
+#     state: directory
     
-- community.windows.win_lineinfile:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
-    regex: '^inventory.inventoryLocations=./cases'
-    line: 'inventory.inventoryLocations=C:\\Monitored,\\\\acl00storage.file.core.windows.net\\Case\\Monitored'
+# - community.windows.win_lineinfile:
+#     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
+#     regex: '^inventory.inventoryLocations=./cases'
+#     line: 'inventory.inventoryLocations=C:\\Monitored,\\\\acl00storage.file.core.windows.net\\Case\\Monitored'
 
-- community.windows.win_lineinfile:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
-    regex: '^licensing.url='
-    line: 'licensing.url=nms.avianclouddev.com:27443'
+# - community.windows.win_lineinfile:
+#     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
+#     regex: '^licensing.url='
+#     line: 'licensing.url=nms.avianclouddev.com:27443'
 
-- community.windows.win_lineinfile:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
-    regex: '^licensing.source=server'
-    line: 'licensing.source=server local-relay-server-local-users cloud-server'
+# - community.windows.win_lineinfile:
+#     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
+#     regex: '^licensing.source=server'
+#     line: 'licensing.source=server local-relay-server-local-users cloud-server'
 
-- community.windows.win_lineinfile:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
-    regex: '^licensing.username='
-    line: 'licensing.username=aviancloud'
+# - community.windows.win_lineinfile:
+#     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
+#     regex: '^licensing.username='
+#     line: 'licensing.username=aviancloud'
 
-- community.windows.win_lineinfile:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
-    regex: '^licensing.securePassword='
-    line: 'licensing.securePassword={cipher}d29efe404e14a83fdc9b819b4c3c48173f5df6e0025ada7fa233e2ed19e51b4'
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\config-util\application.vmoptions
-    regex: '^Xmx2G'
-    line: Xmx2G
+# - community.windows.win_lineinfile:
+#     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
+#     regex: '^licensing.securePassword='
+#     line: 'licensing.securePassword={cipher}d29efe404e14a83fdc9b819b4c3c48173f5df6e0025ada7fa233e2ed19e51b4'
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\config-util\application.vmoptions
+#     regex: '^Xmx2G'
+#     line: Xmx2G
 
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\gateway\application.vmoptions
-    regex: '^Xmx2G'
-    line: Xmx2G
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\gateway\application.vmoptions
+#     regex: '^Xmx2G'
+#     line: Xmx2G
 
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.vmoptions
-    regex: '^Xmx6G'
-    line: Xmx6G
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.vmoptions
+#     regex: '^Xmx6G'
+#     line: Xmx6G
 
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\registration\application.vmoptions
-    regex: '^Xmx2G'
-    line: Xmx2G
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\registration\application.vmoptions
+#     regex: '^Xmx2G'
+#     line: Xmx2G
 
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\user-management\application.vmoptions
-    regex: '^Xms512m'
-    line: Xms512m
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\user-management\application.vmoptions
+#     regex: '^Xms512m'
+#     line: Xms512m
 
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\user-management\application.vmoptions
-    regex: '^Xmx2G'
-    line: Xmx2G
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\user-management\application.vmoptions
+#     regex: '^Xmx2G'
+#     line: Xmx2G
