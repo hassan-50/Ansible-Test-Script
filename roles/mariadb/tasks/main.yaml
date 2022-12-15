@@ -15,9 +15,20 @@
     url: https://configprovisionaccount.blob.core.windows.net/nuix-installers/mariadb-10.6.11-winx64.msi
     dest: C:\dev
 
+- name: Create MariaDb Installation Directory
+  ansible.windows.win_file:
+    path: C:\Program Files\Nuix\Web Platform\Nuix-MariaDb
+    state: directory
+
+# - name: Install the MariaDB
+#   ansible.windows.win_package:
+#     path: C:\\dev\\mariadb-10.6.11-winx64.msi
+#     state: present
+
 - name: Install the MariaDB
-  ansible.windows.win_package:
-    path: C:\\dev\\mariadb-10.6.11-winx64.msi
+  ansible.windows.win_command: msiexec /i C:\\dev\\mariadb-10.6.11-winx64.msi SERVICENAME=MySQL INSTALLDIR=C:\Program Files\Nuix\Web Platform\Nuix-MariaDb /qn 
+  args:
+    chdir: C:\dev
 
 - name: Set Root Password For MariaDB
   ansible.windows.win_powershell:
@@ -63,11 +74,6 @@
   ansible.windows.win_command: C:\\dev\\nuix-investigate-windows-9.6.15.exe -q -console
   args:
     chdir: C:\dev
-
-- name: Create MariaDb Installation Directory
-  ansible.windows.win_file:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-MariaDb
-    state: directory
     
 - community.windows.win_lineinfile:
     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
@@ -134,3 +140,8 @@
 #   ansible.windows.win_command: msiexec /i C:\\dev\\mariadb-10.6.11-winx64.msi [INSTALLDIR=C:\Program Files\Nuix\Web Platform\Nuix-MariaDb] /qn
 #   args:
 #     chdir: C:\dev
+
+# - name: Execute Sql Scripts file
+#   ansible.windows.win_powershell:
+#     script: |
+#       cmd.exe /c "mysql -uroot -pP@ssword -h localhost < C:\Windows\Temp\test-mysql.sql"mysql 
