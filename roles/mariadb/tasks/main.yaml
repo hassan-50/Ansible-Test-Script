@@ -29,6 +29,9 @@
   ansible.windows.win_command: msiexec /i C:\\dev\\mariadb-10.6.11-winx64.msi SERVICENAME=MySQL INSTALLDIR=C:\Program Files\Nuix\Web Platform\Nuix-MariaDb /qn 
   args:
     chdir: C:\dev
+    become: yes
+    become_user: Administrator
+    become_method: runas
 
 - name: Set Root Password For MariaDB
   ansible.windows.win_powershell:
