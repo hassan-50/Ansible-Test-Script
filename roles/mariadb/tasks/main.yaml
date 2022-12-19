@@ -91,12 +91,12 @@
 - community.windows.win_lineinfile:
     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
     regex: '^licensing.username='
-    line: 'licensing.username=aviancloud'
+    line: 'licensing.username=luftborn1'
 
 - community.windows.win_lineinfile:
     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
     regex: '^licensing.securePassword='
-    line: 'licensing.securePassword=AnqYrB25xe58'
+    line: 'licensing.securePassword=w6T#ueW9Wpp#zO'
     # line: 'licensing.securePassword={cipher}d29efe404e14a83fdc9b819b4c3c48173f5df6e0025ada7fa233e2ed19e51b4'
 
 - name: Configure MariaDB to use lower case table names
