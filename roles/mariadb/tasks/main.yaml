@@ -159,6 +159,44 @@
   win_service:
     name: Nuix-Config
     state: restarted
+
+- name: Copy a logstash scriptfile
+  win_copy:
+    src: "logstash.ps1"
+    dest: C:\Windows\Temp\logstash.ps1
+
+- name: Copy a apmAgent
+  win_copy:
+    src: "apm-agent.ps1"
+    dest: C:\Windows\Temp\apm-agent.ps1
+
+- name: Copy a filebeat
+  win_copy:
+    src: "filebeat-agent.ps1"
+    dest: C:\Windows\Temp\filebeat-agent.ps1
+
+- name: Add a PowerShell module
+  community.windows.win_psmodule:
+    name: powershell-yaml
+    state: latest
+
+- name: Run Logstash Script
+  win_shell: C:\Windows\Temp\logstash.ps1
+
+- name: Run Apm Agent Script
+  win_shell: C:\Windows\Temp\apm-agent.ps1
+
+- name: Run Filebeat Script
+  win_shell: C:\Windows\Temp\filebeat-agent.ps1
+
+# - name: Run Powershell Script That Installs Logstash
+#   ansible.windows.win_shell: logstash.ps1
+
+# - name: Run Powershell Script That Installs Apm Agent
+#   ansible.windows.win_shell: apm-agent.ps1
+
+# - name: Run Powershell Script That Installs Filebear
+#   ansible.windows.win_shell: filebeat-agent.ps1
 ####################################
 
 # - name: Install the MariaDb
