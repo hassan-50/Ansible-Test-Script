@@ -58,7 +58,6 @@ output {
     elasticsearch {
     hosts => ["$($elasticUrl)"]
     index => "nuix-%{+YYYY.MM.dd}"
-    }
     user => "$elasticUser"
     password => "$elasticPassword"
     }

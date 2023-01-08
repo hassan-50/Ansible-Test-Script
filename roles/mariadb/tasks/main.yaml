@@ -1,193 +1,202 @@
 ---
 ########################################### Working Scripts
-- name: Create dev directory
-  ansible.windows.win_file:
-    path: C:\\dev
-    state: directory
+# - name: Create dev directory
+#   ansible.windows.win_file:
+#     path: C:\\dev
+#     state: directory
 
-- name: Download MariaDb installer
-  ansible.windows.win_get_url:
-    url: https://configprovisionaccount.blob.core.windows.net/nuix-installers/mariadb-10.6.11-winx64.msi
-    dest: C:\dev
+# - name: Download MariaDb installer
+#   ansible.windows.win_get_url:
+#     url: https://configprovisionaccount.blob.core.windows.net/nuix-installers/mariadb-10.6.11-winx64.msi
+#     dest: C:\dev
 
-- name: Create MariaDb Installation Directory
-  ansible.windows.win_file:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-MariaDb
-    state: directory
+# - name: Create MariaDb Installation Directory
+#   ansible.windows.win_file:
+#     path: C:\Program Files\Nuix\Web Platform\Nuix-MariaDb
+#     state: directory
 
-- name: Install the MariaDB
-  ansible.windows.win_command: msiexec /i C:\\dev\\mariadb-10.6.11-winx64.msi SERVICENAME=MySQL ALLOWREMOTEROOTACCESS=true PASSWORD=P@ssword /qn 
-  args:
-    chdir: C:\dev
+# - name: Install the MariaDB
+#   ansible.windows.win_command: msiexec /i C:\\dev\\mariadb-10.6.11-winx64.msi SERVICENAME=MySQL ALLOWREMOTEROOTACCESS=true PASSWORD=P@ssword /qn 
+#   args:
+#     chdir: C:\dev
 
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\MariaDB 10.6\data\my.ini
-    line: |
-      [mysqld]
-      lower_case_table_names = 1
-      character_set_server = utf8
-      collation_server = utf8_general_ci
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\MariaDB 10.6\data\my.ini
+#     line: |
+#       [mysqld]
+#       lower_case_table_names = 1
+#       character_set_server = utf8
+#       collation_server = utf8_general_ci
 
-- name: Copy a SQL Scripts File
-  ansible.windows.win_copy:
-    src: "test-mysql.sql"
-    dest: C:\Windows\Temp\test-mysql.sql
+# - name: Copy a SQL Scripts File
+#   ansible.windows.win_copy:
+#     src: "test-mysql.sql"
+#     dest: C:\Windows\Temp\test-mysql.sql
 
-- name: Execute Sql Scripts file
-  ansible.windows.win_command: cmd.exe /c "mysql -uroot -pP@ssword -h localhost < C:\Windows\Temp\test-mysql.sql" 
-  args:
-    chdir: C:\Program Files\MariaDB 10.6\bin
+# - name: Execute Sql Scripts file
+#   ansible.windows.win_command: cmd.exe /c "mysql -uroot -pP@ssword -h localhost < C:\Windows\Temp\test-mysql.sql" 
+#   args:
+#     chdir: C:\Program Files\MariaDB 10.6\bin
 
-- name: Download Nuix Investigate installer
-  ansible.windows.win_get_url:
-    url: https://configprovisionaccount.blob.core.windows.net/nuix-installers/nuix-investigate-windows-9.6.15.exe
-    dest: C:\dev
+# - name: Download Nuix Investigate installer
+#   ansible.windows.win_get_url:
+#     url: https://configprovisionaccount.blob.core.windows.net/nuix-installers/nuix-investigate-windows-9.6.15.exe
+#     dest: C:\dev
 
-- name: Create Cases directory
-  ansible.windows.win_file:
-    path: C:\\Cases\\Monitored
-    state: directory
+# - name: Create Cases directory
+#   ansible.windows.win_file:
+#     path: C:\\Cases\\Monitored
+#     state: directory
 
-- name: "Creating varfile to change default credentials"
-  ansible.windows.win_copy:
-    dest: "C:\\dev\\nuix-investigate-windows-9.6.15.varfile"
-    content: |
-      RUN_UMS_INSTALLER=true
-      RUN_REGISTRATION_INSTALLER=true
-      RUN_INVESTIGATE_INSTALLER=true
-      RUN_GATEWAY_INSTALLER=true
-      RUN_CONFIG_INSTALLER=true
-      CONFIG_DEFAULT_PASSWORD=P@ssword
+# - name: "Creating varfile to change default credentials"
+#   ansible.windows.win_copy:
+#     dest: "C:\\dev\\nuix-investigate-windows-9.6.15.varfile"
+#     content: |
+#       RUN_UMS_INSTALLER=true
+#       RUN_REGISTRATION_INSTALLER=true
+#       RUN_INVESTIGATE_INSTALLER=true
+#       RUN_GATEWAY_INSTALLER=true
+#       RUN_CONFIG_INSTALLER=true
+#       CONFIG_DEFAULT_PASSWORD=P@ssword
 
-- name: Install the Nuix-Investigate
-  ansible.windows.win_command: C:\\dev\\nuix-investigate-windows-9.6.15.exe -q -console
-  args:
-    chdir: C:\dev
+# - name: Install the Nuix-Investigate
+#   ansible.windows.win_command: C:\\dev\\nuix-investigate-windows-9.6.15.exe -q -console
+#   args:
+#     chdir: C:\dev
 
-- community.windows.win_lineinfile:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\application.properties
-    regex: '^spring.datasource.password=changeme'
-    line: 'spring.datasource.password=P@ssword'
+# - community.windows.win_lineinfile:
+#     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\application.properties
+#     regex: '^spring.datasource.password=changeme'
+#     line: 'spring.datasource.password=P@ssword'
     
-- community.windows.win_lineinfile:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
-    regex: '^inventory.inventoryLocations=./cases'
-    line: 'inventory.inventoryLocations=C:\\Cases\\Monitored'
-    # line: 'inventory.inventoryLocations=C:\\Monitored,\\\\acl00storage.file.core.windows.net\\Case\\Monitored'
+# - community.windows.win_lineinfile:
+#     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
+#     regex: '^inventory.inventoryLocations=./cases'
+#     line: 'inventory.inventoryLocations=C:\\Cases\\Monitored'
+#     # line: 'inventory.inventoryLocations=C:\\Monitored,\\\\acl00storage.file.core.windows.net\\Case\\Monitored'
 
-- community.windows.win_lineinfile:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
-    regex: '^licensing.url='
-    line: 'licensing.url=license2.avian.dev:443'
-    # line: 'licensing.url=nms.avianclouddev.com:27443'
+# - community.windows.win_lineinfile:
+#     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
+#     regex: '^licensing.url='
+#     line: 'licensing.url=license2.avian.dev:443'
+#     # line: 'licensing.url=nms.avianclouddev.com:27443'
 
-- community.windows.win_lineinfile:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
-    regex: '^licensing.source=server'
-    line: 'licensing.source=server'
-    # line: 'licensing.source=server local-relay-server-local-users cloud-server'
+# - community.windows.win_lineinfile:
+#     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
+#     regex: '^licensing.source=server'
+#     line: 'licensing.source=server'
+#     # line: 'licensing.source=server local-relay-server-local-users cloud-server'
 
-- community.windows.win_lineinfile:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
-    regex: '^licensing.username='
-    line: 'licensing.username=aviancloud'
+# - community.windows.win_lineinfile:
+#     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
+#     regex: '^licensing.username='
+#     line: 'licensing.username=aviancloud'
 
-- community.windows.win_lineinfile:
-    path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
-    regex: '^licensing.securePassword='
-    line: 'licensing.securePassword=AnqYrB25xe58'
-    # line: 'licensing.securePassword={cipher}d29efe404e14a83fdc9b819b4c3c48173f5df6e0025ada7fa233e2ed19e51b4'
+# - community.windows.win_lineinfile:
+#     path: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.properties
+#     regex: '^licensing.securePassword='
+#     line: 'licensing.securePassword=AnqYrB25xe58'
+#     # line: 'licensing.securePassword={cipher}d29efe404e14a83fdc9b819b4c3c48173f5df6e0025ada7fa233e2ed19e51b4'
 
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\config-util\application.vmoptions
-    regex: '^Xmx2G'
-    line: Xmx2G
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\config-util\application.vmoptions
+#     regex: '^Xmx2G'
+#     line: Xmx2G
 
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\gateway\application.vmoptions
-    regex: '^Xmx2G'
-    line: Xmx2G
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\gateway\application.vmoptions
+#     regex: '^Xmx2G'
+#     line: Xmx2G
 
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.vmoptions
-    regex: '^Xmx6G'
-    line: Xmx6G
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\investigate\application.vmoptions
+#     regex: '^Xmx6G'
+#     line: Xmx6G
 
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\registration\application.vmoptions
-    regex: '^Xmx2G'
-    line: Xmx2G
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\registration\application.vmoptions
+#     regex: '^Xmx2G'
+#     line: Xmx2G
 
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\user-management\application.vmoptions
-    regex: '^Xms512m'
-    line: Xms512m
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\user-management\application.vmoptions
+#     regex: '^Xms512m'
+#     line: Xms512m
 
-- name: Configure MariaDB to use lower case table names
-  community.windows.win_lineinfile:
-    dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\user-management\application.vmoptions
-    regex: '^Xmx2G'
-    line: Xmx2G
+# - name: Configure MariaDB to use lower case table names
+#   community.windows.win_lineinfile:
+#     dest: C:\Program Files\Nuix\Web Platform\Nuix-Config\properties\user-management\application.vmoptions
+#     regex: '^Xmx2G'
+#     line: Xmx2G
 
-- name: Restart Nuix-UMS
-  win_service:
-    name: Nuix-UMS
-    state: restarted
+# - name: Restart Nuix-UMS
+#   win_service:
+#     name: Nuix-UMS
+#     state: restarted
 
-- name: Restart Nuix-Registration
-  win_service:
-    name: Nuix-Registration
-    state: restarted
+# - name: Restart Nuix-Registration
+#   win_service:
+#     name: Nuix-Registration
+#     state: restarted
 
-- name: Restart Nuix-Investigate
-  win_service:
-    name: Nuix-Investigate
-    state: restarted
+# - name: Restart Nuix-Investigate
+#   win_service:
+#     name: Nuix-Investigate
+#     state: restarted
 
-- name: Restart Nuix-Gateway
-  win_service:
-    name: Nuix-Gateway
-    state: restarted
+# - name: Restart Nuix-Gateway
+#   win_service:
+#     name: Nuix-Gateway
+#     state: restarted
 
-- name: Restart Nuix-Config
-  win_service:
-    name: Nuix-Config
-    state: restarted
+# - name: Restart Nuix-Config
+#   win_service:
+#     name: Nuix-Config
+#     state: restarted
 
 - name: Copy a logstash scriptfile
   win_copy:
     src: "logstash.ps1"
     dest: C:\Windows\Temp\logstash.ps1
 
-- name: Copy a apmAgent
-  win_copy:
-    src: "apm-agent.ps1"
-    dest: C:\Windows\Temp\apm-agent.ps1
+# - name: Copy a apmAgent
+#   win_copy:
+#     src: "apm-agent.ps1"
+#     dest: C:\Windows\Temp\apm-agent.ps1
 
-- name: Copy a filebeat
-  win_copy:
-    src: "filebeat-agent.ps1"
-    dest: C:\Windows\Temp\filebeat-agent.ps1
+# - name: Copy a filebeat
+#   win_copy:
+#     src: "filebeat-agent.ps1"
+#     dest: C:\Windows\Temp\filebeat-agent.ps1
+
+- name: Ensure the required NuGet package provider version is installed
+  ansible.windows.win_shell: Find-PackageProvider -Name Nuget -ForceBootstrap -IncludeDependencies -Force
 
 - name: Add a PowerShell module
   community.windows.win_psmodule:
     name: powershell-yaml
     state: latest
+    accept_license: true
+
+# - name: Install JDK
+#   win_chocolatey:
+#     name: jdk8
+#     state: present
 
 - name: Run Logstash Script
   win_shell: C:\Windows\Temp\logstash.ps1
 
-- name: Run Apm Agent Script
-  win_shell: C:\Windows\Temp\apm-agent.ps1
+# - name: Run Apm Agent Script
+#   win_shell: C:\Windows\Temp\apm-agent.ps1
 
-- name: Run Filebeat Script
-  win_shell: C:\Windows\Temp\filebeat-agent.ps1
+# - name: Run Filebeat Script
+#   win_shell: C:\Windows\Temp\filebeat-agent.ps1
 
 # - name: Run Powershell Script That Installs Logstash
 #   ansible.windows.win_shell: logstash.ps1
